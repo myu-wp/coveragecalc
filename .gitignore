@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+/dist/
+/*.egg-info
+
+# Mac
+.DS_Store
+
+# Output files
+*.csv
+output.xlsx
+test.csv
