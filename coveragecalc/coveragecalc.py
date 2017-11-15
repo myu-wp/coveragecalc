@@ -33,16 +33,24 @@ def main(args):
 
     # bin cols
     for col in BINS:
-        new_col = col + ' binned'
-        df[new_col] = bin_col(df, col, BINS[col])
+        try:
+            new_col = col + ' binned'
+            df[new_col] = bin_col(df, col, BINS[col])
+        except KeyError:
+            print(f'{col} not found...skipping.')
+            pass
 
     # export to xlsx
     writer = pd.ExcelWriter(args.outfile, engine='openpyxl')
     
     count = 0
     for o in OUTPUTS:
-        t = vc_df(df, o)
-        t.to_excel(writer, sheet_name='coverage', startrow=count, na_rep='NULL')
-        count += len(t) + 2
-
+        try:
+            t = vc_df(df, o)
+            t.to_excel(writer, sheet_name='coverage', startrow=count, na_rep='NULL')
+            count += len(t) + 2
+        except KeyError:
+            print(f'{o} not found...skipping.')
+            pass
+            
     writer.save()
