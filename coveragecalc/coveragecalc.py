@@ -12,11 +12,11 @@ def vc_df(df, col):
     percen = '{:.2%}'.format
 
     total_len = len(df)
-    t = pd.DataFrame(df[col].value_counts(dropna=False))
+    t = pd.DataFrame(df[col].value_counts(dropna=False, sort=False))
     t.columns = ['count']
     t['percentage'] = (t['count'] / total_len).map(percen)
     t['name'] = col
-    return t.sort_values(by='count', ascending=False)
+    return t
 
 def bin_col(df, col, bin_dict):
     """Returns a binned version of a Series for a given df and col"""
