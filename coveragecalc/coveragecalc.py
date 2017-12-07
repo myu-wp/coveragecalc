@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: UTF8 -*-
-from . fields import BINS, OUTPUTS
+from . fields import BINS, CATEGORIES, OUTPUTS
 import pandas as pd
+from pandas.api.types import CategoricalDtype
 import warnings
 warnings.filterwarnings('ignore')  # kind of bad
 
@@ -26,6 +27,17 @@ def bin_col(df, col, bin_dict):
         return pd.cut(df[col], bins=bins, labels=labels, include_lowest=True, right=False)
     return pd.cut(df[col], bins=bins, include_lowest=True, right=False)
 
+def to_category(df, c, cat_list, thresh=0.5):
+    """Given a df and col name, return Series (col) as a categorical dtype if
+    a certain portion of values are unique out of the whole Series, else return
+    Series unchanged. Defaults to 50% threshold."""
+    unique_vals = len(df[c].unique())
+    total_vals = len(df)
+    cat_type = CategoricalDtype(cat_list, ordered=True)
+    if unique_vals / total_vals < thresh:
+        return df[c].astype(cat_type)
+    return df[c]
+
 def main(args):
     """Export coverage calc xlsx document"""
     df = pd.read_csv(args.infile) if args.infile.endswith('csv') else pd.read_excel(args.infile)
@@ -40,6 +52,14 @@ def main(args):
             print(f'{col} not found...skipping.')
             pass
 
+    # convert objs to (ordered) categorical types
+    for k, v in CATEGORIES.items():
+        try:
+            df[k] = to_category(df, k, v)
+        except KeyError:
+            print(f'{k} not found...skipping.')
+            pass
+
     # export to xlsx
     writer = pd.ExcelWriter(args.outfile, engine='openpyxl')
     
@@ -52,5 +72,6 @@ def main(args):
         except KeyError:
             print(f'{o} not found...skipping.')
             pass
-            
+    writer.active = 0
     writer.save()
+    writer.close()

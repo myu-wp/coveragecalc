@@ -62,3 +62,64 @@ BINS = {
                    '400-425', '425-450', '450-475', '475-500',],
     },
 }
+
+to_name = [
+    'Match',
+    'No match',
+    'No name found',
+]
+to_address = [
+    'Match',
+    'Zip+4 match',
+    'Postal match',
+    'City/State match',
+    'No match',
+]
+line_type = [
+    'Mobile',
+    'Landline',
+    'Fixed VOIP',
+    'Non-fixed VOIP',
+    'Premium',
+    'Tollfree',
+    'Voicemail',
+    'Other',
+    'Unknown',
+]
+address_type = [
+    'Commercial mail drop',
+    'Multi unit',
+    'Single unit',
+    'PO box',
+    'PO box throwback',
+    'Unknown address type',
+]
+address_diagnostic = [
+    'Validated',
+    'Validated with  corrections',
+    'Validated only Street, Postcode, City, Country. Premise not validated',
+    'Validated only Postcode, City, Country',
+    'Validated only City, Country',
+    'Validated only Country',
+]
+CATEGORIES = {
+    'primary phone to name': to_name,
+    'secondary phone to name': to_name,
+    'primary address to name': to_name,
+    'secondary address to name': to_name,
+    'email to name': to_name,
+    'primary phone to address': to_address,
+    'secondary phone to address': to_address,
+    'primary phone line type': line_type,
+    'secondary phone line type': line_type,
+    'primary address type': address_type,
+    'secondary address type': address_type,
+    'primary address diagnostic': address_diagnostic,
+    'secondary address diagnostic': address_diagnostic,
+    'ip connection type': [
+        'Cable/DSL',
+        'Corporate',
+        'Cellular',
+        'Dialup',
+    ],
+}
