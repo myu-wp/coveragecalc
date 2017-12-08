@@ -3,6 +3,7 @@
 from . fields import BINS, CATEGORIES, OUTPUTS
 import pandas as pd
 from pandas.api.types import CategoricalDtype
+import numpy as np
 import warnings
 warnings.filterwarnings('ignore')  # kind of bad
 
@@ -42,6 +43,10 @@ def main(args):
     """Export coverage calc xlsx document"""
     df = pd.read_csv(args.infile) if args.infile.endswith('csv') else pd.read_excel(args.infile)
     df.columns = map(str.lower, df.columns)
+
+    # fix related to pr #3 for tanderson-whitepages/WPPBatch
+    if 'confidence score' in df.columns:
+        df['confidence score'] = df['confidence score'].replace('{}', np.nan)
 
     # bin cols
     for col in BINS:
